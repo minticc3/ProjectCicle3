@@ -76,12 +76,12 @@ WSGI_APPLICATION = 'Ciclo3Reto.wsgi.application'
 
 DATABASES = {
     'default': {
-        'HOST' : 'ec2-44-210-36-247.compute-1.amazonaws.com',
-        'USER':'zonuqisuwwuzwf',
+        'HOST' : 'ec2-107-23-76-12.compute-1.amazonaws.com',
+        'USER':'anznvsvbxikphz',
         'PORT' : 5432,
-        'PASSWORD' : '0199ba85a3b8e75987633f41d82ad01fad193a7d4b8ed337cecfd7a0b58361a7',
+        'PASSWORD' : '1fe620b2e06e87ff774ef748056681e5b6646f256ce45f902fa475ade2d20161',
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd3qmt7jifh1gss',
+        'NAME': 'd12l7vmjckp2oq',
     }
 }
 
