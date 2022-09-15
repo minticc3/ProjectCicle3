@@ -33,7 +33,6 @@ class Rol(models.Model):
     id_role = models.IntegerField(primary_key=True)
     name_role = models.CharField(max_length=10, default="Admin")
 
-
 class Employee(models.Model):
     id_employe = models.IntegerField(primary_key=True)
     email = models.CharField(max_length=50)
