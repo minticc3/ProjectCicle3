@@ -15,6 +15,13 @@ class ProfileView(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+    
+    def post(self, request):
+        data=json.loads(request.body)
+        Profile.objects.create(id_profile=data["id_profile"],image=data["image"],phone=data["phone"],
+                               user=data["user"],createdAT=data["createdAT"],updateAT=data["updateAT"])
+        return JsonResponse(data)
+
 
     def get(self, request, id=0):
         if (id > 0):
@@ -27,12 +34,6 @@ class ProfileView(View):
         else:
             pro=list(Profile.objects.values())
             data={"Response ->":pro}
-        return JsonResponse(data)
-
-    def post(self, request):
-        data=json.loads(request.body)
-        Profile.objects.create(id_profile=data["id_profile"],image=data["image"],phone=data["phone"],
-                               user=data["user"],createdAT=data["createdAT"],updateAT=data["updateAT"])
         return JsonResponse(data)
 
     def put(self, request, id):
@@ -65,19 +66,6 @@ class TransactionViews(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, id=0):
-        if (id > 0):
-            tran=list(Transaction.objects.filter(id_transaction=id).values())
-            if (len(tran)>0):
-                TranResponse=tran[0]
-                data={"Response ->":TranResponse}
-            else:
-                data={"Response ->": "Object not found"}
-        else:
-            tran=list(Transaction.objects.values())
-            data={"Response ->":tran}
-        return JsonResponse(data)
-
     def post(self, request):
         data=json.loads(request.body)
         try:
@@ -92,6 +80,21 @@ class TransactionViews(View):
             message={"Response:":"Not Exists..."}
         return JsonResponse(message)
 
+
+    def get(self, request, id=0):
+        if (id > 0):
+            tran=list(Transaction.objects.filter(id_transaction=id).values())
+            if (len(tran)>0):
+                TranResponse=tran[0]
+                data={"Response ->":TranResponse}
+            else:
+                data={"Response ->": "Object not found"}
+        else:
+            tran=list(Transaction.objects.values())
+            data={"Response ->":tran}
+        return JsonResponse(data)
+
+    
     def put(self, request, id):
         data=json.loads(request.body)
         tran=list(Transaction.objects.filter(id_transaction=id).values())
@@ -125,6 +128,13 @@ class RolViews(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
+
+    def post(self, request):
+        data=json.loads(request.body)
+        Rol.objects.create(id_role=data["id_role"],name_role=data["name_role"])
+        return JsonResponse(data)
+
+    
     def get(self, request, id=0):
         if (id > 0):
             rol=list(Rol.objects.filter(id_role=id).values())
@@ -139,11 +149,7 @@ class RolViews(View):
         return JsonResponse(data)         
 
 
-    def post(self, request):
-        data=json.loads(request.body)
-        Rol.objects.create(id_role=data["id_role"],name_role=data["name_role"])
-        return JsonResponse(data)
-
+    
     def put(self, request, id):
         data=json.loads(request.body)
         rol=list(Rol.objects.filter(id_role=id).values())
@@ -171,18 +177,6 @@ class EmployeeViews(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, id=0): #Read
-        if (id > 0):
-            employee=list(Employee.objects.filter(id_employe=id).values())
-            if (len(employee)>0):
-                employeeResponse=employee[0]
-                data={'employee ->':employeeResponse}
-            else:
-                data={'message': "Object not found"}
-        else:
-            employee=list(Employee.objects.values())
-            data={'employee':employee}       
-        return JsonResponse(data)         
 
     def post(self, request): #Create
         data = json.loads(request.body)
@@ -202,6 +196,21 @@ class EmployeeViews(View):
         except Employee.DoesNotExist:
             message = {"Response:": "Not Exists..."}
         return JsonResponse(message)
+
+    def get(self, request, id=0): #Read
+        if (id > 0):
+            employee=list(Employee.objects.filter(id_employe=id).values())
+            if (len(employee)>0):
+                employeeResponse=employee[0]
+                data={'employee ->':employeeResponse}
+            else:
+                data={'message': "Object not found"}
+        else:
+            employee=list(Employee.objects.values())
+            data={'employee':employee}       
+        return JsonResponse(data)         
+
+    
     def put(self, request, id): #Update
         data=json.loads(request.body)
         employee=list(Employee.objects.filter(id_employe=id).values())
@@ -228,19 +237,6 @@ class EnterpriseViews(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, id=0):
-        if (id > 0):
-            ent=list(Enterprise.objects.filter(id_enterprise=id).values())
-            if (len(ent)>0):
-                entResponse=ent[0]
-                data={'Enterprise ->':entResponse}
-            else:
-                data={'message': "Object not found"}
-        else:
-            ent=list(Enterprise.objects.values())
-            data={'listEnterprise':ent}       
-        return JsonResponse(data)         
-
     def post(self, request):
         data=json.loads(request.body)
         try:
@@ -258,6 +254,21 @@ class EnterpriseViews(View):
             message={"Response:":"Not exist.."}
         return JsonResponse(message)
 
+
+    def get(self, request, id=0):
+        if (id > 0):
+            ent=list(Enterprise.objects.filter(id_enterprise=id).values())
+            if (len(ent)>0):
+                entResponse=ent[0]
+                data={'Enterprise ->':entResponse}
+            else:
+                data={'message': "Object not found"}
+        else:
+            ent=list(Enterprise.objects.values())
+            data={'listEnterprise':ent}       
+        return JsonResponse(data)         
+
+    
     def put(self, request, id):
         data=json.loads(request.body)
         ent=list(Enterprise.objects.filter(id_enterprise=id).values())
