@@ -34,7 +34,7 @@ class Rol(models.Model): #Realizado en grupo
     name_role = models.CharField(max_length=10, default="Admin")
 
 class Employee(models.Model): #Leo
-    id_employee = models.IntegerField(primary_key=True)
+    id_employe = models.IntegerField(primary_key=True)
     email = models.CharField(max_length=50)
     profile = models.ForeignKey(Profile , on_delete=models.CASCADE)
     id_role = models.ForeignKey(Rol, on_delete=models.CASCADE)

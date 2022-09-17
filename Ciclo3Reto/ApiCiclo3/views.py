@@ -11,6 +11,56 @@ from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
 
+class ProfileView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, id=0):
+        if (id > 0):
+            pro=list(Profile.objects.filter(id_profile=id).values())
+            if (len(pro)>0):
+                ProResponse=pro[0]
+                data={"Response ->":ProResponse}
+            else:
+                data={"Response ->": "Object not found"}
+        else:
+            pro=list(Profile.objects.values())
+            data={"Response ->":pro}
+        return JsonResponse(data)
+
+    def post(self, request):
+        data=json.loads(request.body)
+        Profile.objects.create(id_profile=data["id_profile"],image=data["image"],phone=data["phone"],
+                               user=data["user"],createdAT=data["createdAT"],updateAT=data["updateAT"])
+        return JsonResponse(data)
+
+    def put(self, request, id):
+        data=json.loads(request.body)
+        pro=list(Profile.objects.filter(id_profile=id).values())
+        if (len(pro)>0):
+            prof=Profile.objects.get(id_profile=id)
+            prof.image=data['image']
+            prof.phone = data['phone']
+            prof.user = data['user']
+            prof.createdAT = data['createdAT']
+            prof.updateAT = data['updateAT']
+            prof.save()
+            message={"Response:":"Updated Successfully.."}
+        else:
+            message={"Response:":"Not Successfully.."}
+        return JsonResponse(message)
+
+    def delete(self,request,id):
+        pro=list(Profile.objects.filter(id_profile=id).values())
+        if(len(pro)>0):
+            Profile.objects.filter(id_profile=id).delete()
+            message={"Response:":"Delete Successfully.."}
+        else:
+            message={"Response:":"Not delete Successfully.."}
+        return JsonResponse(message)
+
+
 class RolViews(View):
     @method_decorator(csrf_exempt)
     def dispatch(self, request, *args, **kwargs):
@@ -106,9 +156,9 @@ class EnterpriseViews(View):
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
 
-    def get(self, request, id_ent=0):
-        if (id_ent > 0):
-            ent=list(Enterprise.objects.filter(id_enterprise=id_ent).values())
+    def get(self, request, id=0):
+        if (id > 0):
+            ent=list(Enterprise.objects.filter(id_enterprise=id).values())
             if (len(ent)>0):
                 entResponse=ent[0]
                 data={'Enterprise ->':entResponse}
@@ -122,48 +172,45 @@ class EnterpriseViews(View):
     def post(self, request):
         data=json.loads(request.body)
         try:
-            pro=Enterprise.objects.get(id_profile=data["id_profile"])
+            pro=Profile.objects.get(id_profile=data["id_profile"])
             transaction = Transaction.objects.get(id_transaction=data["id_transaction"])
-            ent=Enterprise.objects.create(id_enterprise=data["id_enterprise"],name=data["name"],document=data["document"],phone=data["phone"],address=data["address"],id_profile=pro,id_transaction=transaction,createdAT=data["createdAT"],updateAT=data["updateAT"])
+            ent=Enterprise.objects.create(id_enterprise=data["id_enterprise"],name=data["name"],document=data["document"],
+                                          phone=data["phone"],address=data["address"],id_profile=pro,
+                                          id_transaction=transaction,createdAT=data["createdAT"],updateAT=data["updateAT"])
             ent.save()
             message={"Response:":"Updated Successfully.."}
-            return JsonResponse(data)
+            return JsonResponse(message)
         except Enterprise.DoesNotExist:
             message={"Response:":"Not exist.."} 
         except Enterprise.DoesNotExist:
             message={"Response:":"Not exist.."}
-        return JsonResponse(message)     
+        return JsonResponse(message)
 
-    def post(self, request):
-       data=json.loads(request.body)
-       Enterprise.objects.creae(id=data["id_enterprise"], name=data["name"], document=data["document"],phone=data["phone"],address=data["address"],id_profile=data["id_profile"],id_transaction=data["id_transaction"])
-       return JsonResponse(data)      
-
-    def put(self, request, id_ent):
+    def put(self, request, id):
         data=json.loads(request.body)
-        ent=list(Enterprise.objects.filter(id_enterprise=id_ent).values())
+        ent=list(Enterprise.objects.filter(id_enterprise=id).values())
         if (len(ent)>0):
             pro=Profile.objects.get(id_profile=data["id_profile"])
             transaction = Transaction.objects.get(id_transaction=data["id_transaction"])
-            enterprise=Enterprise.objects.get(id_enterprise=id_ent)
+            enterprise=Enterprise.objects.get(id_enterprise=id)
             enterprise.name=data['name']
             enterprise.document=data['document']
-            ent.enterprise.phone=data['phone']
+            enterprise.phone=data['phone']
             enterprise.address=data['address']
-            enterprise.id_profile=pro['id_profile']
-            enterprise.id_transaction=transaction['id_transaction']
-            enterprise.createAT=data['createAT']
-            enterprise.updateAT=data['createAT']
+            pro.id_profile=data['id_profile']
+            transaction.id_transaction=data['id_transaction']
+            enterprise.createdAT=data['createdAT']
+            enterprise.updateAT=data['updateAT']
             enterprise.save()
             message={"Response:":"Updated Successfully.."}
         else:
             message={"Response:":"Not Successfully.."}
         return JsonResponse(message)
 
-    def delete(self,request,id_ent):
-        ent=list(Enterprise.objects.filter(id_enterprise=id_ent).values())
+    def delete(self,request,id):
+        ent=list(Enterprise.objects.filter(id_enterprise=id).values())
         if(len(ent)>0):
-            Enterprise.objects.filter(id_enterprise=id_ent).delete()
+            Enterprise.objects.filter(id_enterprise=id).delete()
             message={"Response:":"Delete Successfully.."}
         else:
             message={"Response:":"Not exist.."}
