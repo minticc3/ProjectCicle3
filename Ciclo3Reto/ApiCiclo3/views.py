@@ -80,9 +80,17 @@ class TransactionViews(View):
 
     def post(self, request):
         data=json.loads(request.body)
-        pro=Profile.objects.get(id_profile=data["id_profile"])
-        Transaction.objects.create(id_transaction=data["id_transaction"],concept=data["concept"],amount=data["amount"],id_profile=pro,enterprises=data["enterprises"],createdAT=data["createdAT"],updateAT=data["updateAT"])
-        return JsonResponse(data)
+        try:
+            pro=Profile.objects.get(id_profile=data["id_profile"])
+            tra=Transaction.objects.create(id_transaction=data["id_transaction"],concept=data["concept"],amount=data["amount"],id_profile=pro,enterprises=data["enterprises"],createdAT=data["createdAT"],updateAT=data["updateAT"])
+            tra.save()
+            message={"Response:":"Create Successfully.."}
+            return JsonResponse(message)
+        except Transaction.DoesNotExist:
+            message={"Response:":"Not Exists..."}
+        except Transaction.DoesNotExist:
+            message={"Response:":"Not Exists..."}
+        return JsonResponse(message)
 
     def put(self, request, id):
         data=json.loads(request.body)
@@ -165,7 +173,7 @@ class EmployeeViews(View):
 
     def get(self, request, id=0): #Read
         if (id > 0):
-            employee=list(Employee.objects.filter(id_employee=id).values())
+            employee=list(Employee.objects.filter(id_employe=id).values())
             if (len(employee)>0):
                 employeeResponse=employee[0]
                 data={'employee ->':employeeResponse}
@@ -177,15 +185,28 @@ class EmployeeViews(View):
         return JsonResponse(data)         
 
     def post(self, request): #Create
-        data=json.loads(request.body)
-        Employee.objects.create(id_employee=data["id_employee"],email=data["email"])
-        return JsonResponse(data)
-
+        data = json.loads(request.body)
+        try:
+            pro = Profile.objects.get(id_profile=data["id_profile"])
+            rol = Rol.objects.get(id_role=data['id_role'])
+            ent = Enterprise.objects.get(id_enterprise=data['id_enterprise'])
+            tran = Transaction.objects.get(id_transaction=data['id_transaction'])
+            empl = Employee.objects.create(id_employe=data['id_employe'],email=data['email'],profile=pro,
+                                           id_role=rol,id_enterprise=ent,id_transaction=tran,createdAT=data['createdAT'],
+                                           updateAT=data['updateAT'])
+            empl.save()
+            message = {"Response:": "Create Successfully.."}
+            return JsonResponse(message)
+        except Employee.DoesNotExist:
+            message = {"Response:": "Not Exists..."}
+        except Employee.DoesNotExist:
+            message = {"Response:": "Not Exists..."}
+        return JsonResponse(message)
     def put(self, request, id): #Update
         data=json.loads(request.body)
-        employee=list(Employee.objects.filter(id_employee=id).values())
+        employee=list(Employee.objects.filter(id_employe=id).values())
         if (len(employee)>0):
-            employees=Employee.objects.get(id_employee=id)
+            employees=Employee.objects.get(id_employe=id)
             employees.email=data['email']
             employees.save()
             message={"Response:":"Updated Successfully.."}
@@ -194,9 +215,9 @@ class EmployeeViews(View):
         return JsonResponse(message)    
 
     def delete(self,request,id): #Delete
-        employee=list(Employee.objects.filter(id_employee=id).values())
+        employee=list(Employee.objects.filter(id_employe=id).values())
         if(len(employee)>0):
-            Employee.objects.filter(id_employee=id).delete()
+            Employee.objects.filter(id_employe=id).delete()
             message={"Response:":"Delete Successfully.."}
         else:
             message={"Response:":"Not delete Successfully.."}
@@ -229,7 +250,7 @@ class EnterpriseViews(View):
                                           phone=data["phone"],address=data["address"],id_profile=pro,
                                           id_transaction=transaction,createdAT=data["createdAT"],updateAT=data["updateAT"])
             ent.save()
-            message={"Response:":"Updated Successfully.."}
+            message={"Response:":"Create Successfully.."}
             return JsonResponse(message)
         except Enterprise.DoesNotExist:
             message={"Response:":"Not exist.."} 
