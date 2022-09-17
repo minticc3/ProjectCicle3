@@ -60,6 +60,57 @@ class ProfileView(View):
             message={"Response:":"Not delete Successfully.."}
         return JsonResponse(message)
 
+class TransactionViews(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, id=0):
+        if (id > 0):
+            tran=list(Transaction.objects.filter(id_transaction=id).values())
+            if (len(tran)>0):
+                TranResponse=tran[0]
+                data={"Response ->":TranResponse}
+            else:
+                data={"Response ->": "Object not found"}
+        else:
+            tran=list(Transaction.objects.values())
+            data={"Response ->":tran}
+        return JsonResponse(data)
+
+    def post(self, request):
+        data=json.loads(request.body)
+        pro=Profile.objects.get(id_profile=data["id_profile"])
+        Transaction.objects.create(id_transaction=data["id_transaction"],concept=data["concept"],amount=data["amount"],id_profile=pro,enterprises=data["enterprises"],createdAT=data["createdAT"],updateAT=data["updateAT"])
+        return JsonResponse(data)
+
+    def put(self, request, id):
+        data=json.loads(request.body)
+        tran=list(Transaction.objects.filter(id_transaction=id).values())
+        if (len(tran)>0):
+            pro=Profile.objects.get(id_profile=data["id_profile"])
+            tran=Transaction.objects.get(id_transaction=id)
+            tran.concept=data['concept']
+            tran.amount = data['amount']
+            pro.id_profile=data['id_profile']
+            tran.enterprises=data['enterprises']
+            tran.createdAT = data['createdAT']
+            tran.updateAT = data['updateAT']
+            tran.save()
+            message={"Response:":"Updated Successfully.."}
+        else:
+            message={"Response:":"Not Successfully.."}
+        return JsonResponse(message)
+
+    def delete(self,request,id):
+        tran=list(Transaction.objects.filter(id_transaction=id).values())
+        if(len(tran)>0):
+            Transaction.objects.filter(id_transaction=id).delete()
+            message={"Response:":"Delete Successfully.."}
+        else:
+            message={"Response:":"Not delete Successfully.."}
+        return JsonResponse(message)
+
 
 class RolViews(View):
     @method_decorator(csrf_exempt)

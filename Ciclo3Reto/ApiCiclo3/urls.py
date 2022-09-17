@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import RolViews, EmployeeViews, ProfileView, EnterpriseViews
+from .views import RolViews, EmployeeViews, ProfileView, EnterpriseViews, TransactionViews
 
 urlpatterns=[
     path('rol/',RolViews.as_view(), name="Get-Insert"),
@@ -13,5 +13,8 @@ urlpatterns=[
 
     path('employee/',EmployeeViews.as_view(), name="Get-Insert"),
     path('employee/<int:id>',EmployeeViews.as_view(), name="Update-Delete"),
+
+    path('transaction/',TransactionViews.as_view(), name="Get-Insert"),
+    path('transaction/<int:id>',TransactionViews.as_view(), name="Update-Delete"),
     
 ]
