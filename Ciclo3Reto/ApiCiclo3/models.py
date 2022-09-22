@@ -36,6 +36,7 @@ class Rol(models.Model): #Realizado en grupo
 class Employee(models.Model): #Leo
     id_employe = models.IntegerField(primary_key=True)
     email = models.CharField(max_length=50)
+    password =  models.CharField(max_length=50)
     profile = models.ForeignKey(Profile , on_delete=models.CASCADE)
     id_role = models.ForeignKey(Rol, on_delete=models.CASCADE)
     id_enterprise = models.ForeignKey(Enterprise, on_delete=models.CASCADE)

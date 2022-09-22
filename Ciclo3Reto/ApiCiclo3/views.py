@@ -191,7 +191,7 @@ class EmployeeViews(View):
             rol = Rol.objects.get(id_role=data['id_role'])
             ent = Enterprise.objects.get(id_enterprise=data['id_enterprise'])
             tran = Transaction.objects.get(id_transaction=data['id_transaction'])
-            empl = Employee.objects.create(id_employe=data['id_employe'],email=data['email'],profile=pro,
+            empl = Employee.objects.create(id_employe=data['id_employe'],email=data['email'],password=data['password'],profile=pro,
                                            id_role=rol,id_enterprise=ent,id_transaction=tran,createdAT=data['createdAT'],
                                            updateAT=data['updateAT'])
             empl.save()
@@ -208,6 +208,7 @@ class EmployeeViews(View):
         if (len(employee)>0):
             employees=Employee.objects.get(id_employe=id)
             employees.email=data['email']
+            employees.password=data['password']
             employees.save()
             message={"Response:":"Updated Successfully.."}
         else:
@@ -287,3 +288,18 @@ class EnterpriseViews(View):
         else:
             message={"Response:":"Not exist.."}
         return JsonResponse(message)
+
+def loginUser(request):
+    if(request.method=='POST'):
+        try:
+            UserValidation = Employee.objects.get(email=request.POST['email'],password=request.POST['password'])
+            if(UserValidation.id_role_id==1):
+                request.session['email']=UserValidation.email
+                print(UserValidation.email, UserValidation.password)
+                return  render(request, 'Admin/welcome.html')
+            elif(UserValidation.id_role_id==2):
+                request.session['email']=UserValidation.email
+                return  render(request, 'Cliente/welcome.html')
+        except Employee.DoesNotExist:
+            message.warning(request, "Usuario o Contraseña Incorrectos")
+    return render(request, 'login/login.html')

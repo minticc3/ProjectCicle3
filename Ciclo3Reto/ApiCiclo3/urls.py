@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import RolViews, EmployeeViews, ProfileView, EnterpriseViews, TransactionViews
+from . import views
 
 urlpatterns=[
     path('rol/',RolViews.as_view(), name="Get-Insert"),
@@ -16,5 +17,8 @@ urlpatterns=[
 
     path('transaction/',TransactionViews.as_view(), name="Get-Insert"),
     path('transaction/<int:id>',TransactionViews.as_view(), name="Update-Delete"),
+
+    #login
+    path('login/',views.loginUser , name="Login"),
     
 ]
