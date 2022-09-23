@@ -1,3 +1,4 @@
+from tkinter import E
 from django.shortcuts import render
 from django.views import View
 from .models import Rol
@@ -310,7 +311,38 @@ def loginUser(request):
                 return  render(request, 'Admin/welcome.html')
             elif(UserValidation.id_role_id==2):
                 request.session['email']=UserValidation.email
-                return  render(request, 'Cliente/welcome.html')
+                return  render(request, 'Employee/welcome.html')
         except Employee.DoesNotExist:
             message.warning(request, "Usuario o Contraseña Incorrectos")
     return render(request, 'login/login.html')
+
+def formRegister(request):
+    return render(request, 'Admin/registro.html')
+
+def formUpdate(request,id):
+    employee=Employee.objects.get(id_employe=id)
+    data={
+        'employee':employee
+    }
+    return render(request,"actualizaremp.html",data)
+
+def updateEmployee(request):
+    id_employe = request.POST['id_employe']
+    email = request.POST['email']
+    password =  request.POST['password']
+    profile = request.POST['profile']
+    id_role = request.POST['id_role']
+    id_enterprise = request.POST['id_enterprise']
+    id_transaction = request.POST['id_transaction']
+    createdAT = request.POST['createdAT']
+    updateAT = request.POST['updateAT']
+    emp=Employee.objects.get(id_employe=id_employe)
+    emp.id_employee=id_employe    
+    emp.email = email
+    emp.password = password 
+    emp.profile = profile
+    emp.id_role = id_role
+    emp.id_enterprise = id_enterprise
+    emp.id_transaction = id_transaction
+    emp.createdAT = createdAT
+    emp.updateAT = updateAT

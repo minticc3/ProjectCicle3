@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee</title>
+</head>
+<body>
+    <header class="contenedorheader" id="contenedorheader">
+        <div class="titulologo">
+            <h1 class="titulo">Consulta de Empleado</h1>
+            <div class="logo"></div>
+        </div>
+        <nav class="navegacion">
+            <ul class="lista">
+                <li class="items"><a href="/newuser/">Nuevo</a></li>
+                <li class="items"><a href="consultaremp.html">Consultar Employees</a></li>
+                <li class="items"><a href="">Add Employees</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="">
+        <table class="">
+            <div class="">Employees</div>
+            <tr>
+                <th>Empleado</th>
+                <th>Contraseña</th>
+                <th>Perfil</th>
+                <th>Rol</th>
+                <th>Id enmpresa</th>
+                <th>Id transaccion</th>
+                <th>Crear AT</th>
+                <th>Actualizar AT</th>
+            </tr>
+            {% for i in emp%}
+            <tr>   
+                <td>{{i.id_employe}}</td>
+                <td>{{i.email}}</td>
+                <td>{{i.password}}</td>
+                <td>{{i.profile}}</td>
+                <td>{{i.id_role}}</td>
+                <td>{{i.id_enterprise}}</td>
+                <td>{{i.id_transaction}}</td>
+                <td>{{i.createdAT}}</td>
+                <td>{{i.updateAT}}</td>
+                <td><a href="/actualizaremp/{{i.id_employe}}">Actualizar</a></td>
+                <td><a href="/eliminarcliente/{{i.id_employe}}">Eliminar</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </section>
+</body>
+</html>

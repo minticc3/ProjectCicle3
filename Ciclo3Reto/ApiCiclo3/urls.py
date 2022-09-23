@@ -20,5 +20,12 @@ urlpatterns=[
 
     #login
     path('login/',views.loginUser , name="Login"),
+
+    #register
+    path('newemployee/', views.formRegister, name="Formulario Nuevo Empleado"),
     
+    #actualizar
+    path('actualizaremp/<int:id>', views.formUpdate , name="Formulario Actualizar Empleado"),
+
+    path('actualizae/', views.updateEmployee, name="Actualizar Empleado")
 ]

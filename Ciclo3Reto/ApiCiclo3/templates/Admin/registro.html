@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Employee</title>
+</head>
+<body>
+    <header class="contenedorheader" id="contenedorheader">
+        <div class="titulologo">
+            <h1 class="titulo">Register</h1>
+            <div class="logo"></div>
+        </div>
+        <nav class="navegacion">
+            <ul class="lista">
+                <li class="items"><a href="/employee/">Volver</a></li>
+                <li class="items"><a href="consultaremp.html">Employees</a></li>
+            </ul>
+        </nav>
+    </header>
+    <section class="sectiontwo">
+        <fieldset class="formfields">
+            <form action="/employee/" method="POST" class="form">
+                <legend>Information</legend>
+                <label for="id_employe">ID: 
+                    <input type="text" name="id_employe" id="" placeholder="Digite su ID">
+                </label>
+                <label for="email">Email: 
+                    <input type="email" name="email" id="" placeholder="Digite su email">
+                </label>
+                <label for="password">Password: 
+                    <input type="password" name="password" id="" placeholder="Digite su contraseña">
+                </label>
+                <label for="profile">Profile: 
+                    <input type="text" name="profile" id="" placeholder="Tipo de perfil">
+                </label>
+                <label for="id_role" class="">Rol: 
+                        <select name="id_role" id="rol">
+                          <option value="1">Admin</option>
+                          <option value="2">employee</option>
+                        </select>
+                    <!--<input type="text" name="id_role" id="" placeholder="Tipo de rol">-->
+                </label>
+                <label for="id_enterprise">ID Enterprise: 
+                    <input type="text" name="id_enterprise" id="" placeholder="Digite su ID Enterprise">
+                </label>
+                <label for="id_transaction">ID transaction: 
+                    <input type="text" name="id_transaction" id="" placeholder="Digite su ID transaction">
+                </label>
+                <label for="createdAT">Create AT: 
+                    <input type="date" name="createdAT" id="" >
+                </label>
+                <label for="updateAT">Update AT: 
+                    <input type="date" name="updateAT" id="" >
+                </label>
+                <input type="submit" value="Send"> <br>
+            </form>
+        </fieldset>
+    </section>
+</body>
+</html>
